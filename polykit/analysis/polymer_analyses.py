@@ -119,13 +119,14 @@ def smart_contacts(data, cutoff=1.7, min_cutoff=2.1, percent_func=lambda x: 1 / 
         return calculate_contacts(data, cutoff)
 
 
-def generate_bins(N, start=4, bins_per_order_magn=10):
+def generate_bins(end, start=1, bins_decade=10):
     lstart = np.log10(start)
-    lend = np.log10(N - 1) + 1e-6
-    num = int(np.ceil((lend - lstart) * bins_per_order_magn))
-    bins = np.unique(np.logspace(lstart, lend, dtype=int, num=max(num, 0)))
-    if len(bins) > 0:
-        assert bins[-1] == N - 1
+    lend = np.log10(end)
+    num = int(np.round(np.ceil((lend - lstart) * bins_decade)))
+    bins = np.unique(
+        np.round(np.logspace(lstart, lend, num=max(num, 0))).astype(np.int64)
+    )
+    assert bins[-1] == end
     return bins
 
 
