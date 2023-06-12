@@ -57,7 +57,7 @@ def cached_contact_vs_dist(
     coords = coords[particle_slice[0]:particle_slice[-1]]
     sc = polymer_analyses.gaussian_contact_vs_dist(
         coords,
-        contact_vs_dist_func=polymer_analyses.contact_vs_dist,
+        contact_vs_dist_func=polymer_analyses.contact_vs_dist_df,
         random_sigma=random_sigma,
         random_reps=random_reps,
         bins_decade=bins_decade,

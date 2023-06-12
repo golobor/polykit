@@ -14,7 +14,7 @@ def path_to_traj(path):
         return gsd.hoomd.open(name=pathlib.Path(path))
 
 
-def unwrap_pos_gsd(snapshot, get_pos_f=None, max_delta=2):
+def unwrap_pos(snapshot, get_pos_f=None, max_delta=2):
     """Unwrap polymer coordinates wrapped into periodic boundary conditions
 
     Args:
@@ -47,7 +47,7 @@ def unwrap_pos_gsd(snapshot, get_pos_f=None, max_delta=2):
     return d
 
 
-def _get_last_frame_idx_gsd(traj):
+def _get_last_frame_idx(traj):
     traj = path_to_traj(traj)
 
 
@@ -56,21 +56,21 @@ def _get_last_frame_idx_gsd(traj):
 
     return len(traj) - 1
 
-def get_abs_frame_idx_gsd(traj, idx):
+def get_abs_frame_idx(traj, idx):
     traj = path_to_traj(traj)
 
     if idx < 0:
-        idx = _get_last_frame_idx_gsd(traj) + 1 + idx
+        idx = _get_last_frame_idx(traj) + 1 + idx
 
     return idx
 
-def fetch_snaphot_gsd(
+def fetch_snaphot(
     traj, 
     frame_idx):
     
     traj = path_to_traj(traj)
     
-    return traj[get_abs_frame_idx_gsd(traj, frame_idx)]
+    return traj[get_abs_frame_idx(traj, frame_idx)]
 
 
 def fetch_frame(
@@ -78,10 +78,10 @@ def fetch_frame(
     frame_idx, 
     unwrap=True):
     
-    snapshot = fetch_snaphot_gsd(traj, frame_idx)
+    snapshot = fetch_snaphot(traj, frame_idx)
     
     if unwrap:
-        d = unwrap_pos_gsd(snapshot)
+        d = unwrap_pos(snapshot)
     else:
         d = np.copy(snapshot.particles.position)
         
