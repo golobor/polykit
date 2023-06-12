@@ -33,7 +33,6 @@ for (bins[0].. bins[1]), (bins[1]..bins[2]). Therefore, we have to return bin mi
 
 """
 
-from math import sqrt
 
 import numpy as np
 import pandas as pd
@@ -185,7 +184,7 @@ def contact_scaling(data, bins0=None, cutoff=1.1, *, ring=False):
 
     connumbers = connumbers / possible
 
-    a = [sqrt(i[0] * (i[1] - 1)) for i in bins]
+    a = [np.sqrt(i[0] * (i[1] - 1)) for i in bins]
     return a, connumbers
 
 
