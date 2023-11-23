@@ -64,6 +64,10 @@ def get_abs_frame_idx(traj, idx):
 
     return idx
 
+def get_frame_nsteps(traj, frame_idx):
+    snapshot = fetch_snaphot(traj, frame_idx)
+    return snapshot.configuration.step
+
 def fetch_snaphot(
     traj, 
     frame_idx):
