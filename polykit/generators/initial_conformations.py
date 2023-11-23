@@ -311,3 +311,56 @@ def grow_cubic(N, boxSize, method="standard"):
                 break
                 # print a
     return np.array(a) - 1
+
+
+def space_filling_curve(N, cond, init_point=None):
+    """Grow a space-filling curve in 3D.
+
+    Args:
+        N (int): the number of points to generate (including the initial point).
+        cond (function): a function that takes a point in 3D and returns True if the point is valid and False otherwise.
+        init_point (tuple, optional): the initial point. Defaults to None.
+
+    Raises:
+        Exception: _description_
+
+    Returns:
+        np.array: the generated points.
+    """
+    
+    i = 0
+    d = np.zeros((N,3))
+    if init_point is not None:
+        d[0] = init_point
+    nx, ny, nz = 0, 0, 0
+    
+    while i < N-1:
+        dx = ((ny + 1) % 2) * 2 - 1
+        new_p = d[i] + (dx, 0, 0)
+        
+        if cond(new_p):
+            d[i+1] = new_p
+            i += 1
+            nx += 1
+            continue
+        
+        dy = ((nz + 1) % 2) * 2 - 1
+        new_p = d[i] + (0, dy, 0)
+
+        if cond(new_p):
+            d[i+1] = new_p
+            i+= 1
+            ny += 1
+            continue
+        
+        new_p = d[i] + (0, 0, 1)
+
+        if cond(new_p):
+            d[i+1] = new_p
+            i += 1
+            nz += 1
+            continue
+        
+        raise Exception('Cannot grow up!')
+    
+    return d
