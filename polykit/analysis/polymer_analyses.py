@@ -66,6 +66,45 @@ def calculate_contacts(data, cutoff=1.7):
     return pairs
 
 
+def calculate_contacts_chunked(data, cutoff=1.7, chunk_size = int(1e8)):
+    """
+    Calculate contacts between particles, chunked.
+
+    Args:
+        data (ndarray): Array of shape Nx3 representing the polymer data.
+        cutoff (float, optional): Distance cutoff for identifying contacts. Defaults to 1.7.
+
+    Yields:
+        ndarray: Array of shape Mx2 representing the pairs of pairticles that are in contact.
+
+    Raises:
+        ValueError: If the shape of the polymer data is not Nx3.
+        RuntimeError: If the polymer data contains NaN values.
+    """
+
+    if data.shape[1] != 3:
+        raise ValueError("Incorrect polymer data shape. Must be Nx3.")
+
+    if np.isnan(data).any():
+        raise RuntimeError("Data contains NANs")
+
+    tree = cKDTree(data)
+    
+    N_RANDOM = 10
+    random_sample = tree.query_ball_point(x=data[np.random.choice(len(data), size=N_RANDOM)], r=cutoff, workers = 1)
+    n_pairs_avg = np.mean([len(i) for i in random_sample])
+    particles_per_chunk = int(chunk_size // n_pairs_avg)
+
+    for i in range(0, len(d_chrom), particles_per_chunk):
+        chunk = d_chrom[i:i+particles_per_chunk]
+        
+        neighbours = tree.query_ball_point(x=chunk, r=cutoff, workers = 1)
+        pairs = np.vstack([np.repeat(np.arange(len(neighbours)), [len(i) for i in neighbours]), np.concatenate(neighbours)]).T
+        pairs = pairs[pairs[:,0] != pairs[:,1]]
+
+        yield pairs
+
+
 def smart_contacts(data, cutoff=1.7, min_cutoff=2.1, percent_func=lambda x: 1 / x):
     """Calculates contacts for a polymer, give the contact radius (cutoff)
     This method takes a random fraction of the monomers that is equal to (
