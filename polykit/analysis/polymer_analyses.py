@@ -95,8 +95,8 @@ def calculate_contacts_chunked(data, cutoff=1.7, chunk_size = int(1e8)):
     n_pairs_avg = np.mean([len(i) for i in random_sample])
     particles_per_chunk = int(chunk_size // n_pairs_avg)
 
-    for i in range(0, len(d_chrom), particles_per_chunk):
-        chunk = d_chrom[i:i+particles_per_chunk]
+    for i in range(0, len(data), particles_per_chunk):
+        chunk = data[i:i+particles_per_chunk]
         
         neighbours = tree.query_ball_point(x=chunk, r=cutoff, workers = 1)
         pairs = np.vstack([np.repeat(np.arange(len(neighbours)), [len(i) for i in neighbours]), np.concatenate(neighbours)]).T
