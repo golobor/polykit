@@ -3,8 +3,8 @@ scipy>=0.16
 pandas>=0.19
 matplotlib>=2.0
 rowan
+cooler
 joblib
 pyside2
 ipython
 notebook
-tornado==6.0.0
