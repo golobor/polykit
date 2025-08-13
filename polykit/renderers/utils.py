@@ -9,9 +9,9 @@ def interpolate_chain(positions, extra_bonds=[], target_N=90000, fine_grain=10):
     Proceeds by cubic spline interpolation as follows.
 
     1. Interpolate the data using cubic spline
-    2. Evaluate cubic spline at targetN*10 values
-    3. Rescale the evaluated spline such that total distance is targetN
-    4. Select targetN points along the path with distance between neighboring points _along the chain_ equal to 1.
+    2. Evaluate cubic spline at target_N*fine_grain values
+    3. Rescale the evaluated spline such that total distance is target_N
+    4. Select target_N points along the path with distance between neighboring points _along the chain_ equal to 1.
     5. Select appropriate bonds along the interpolated path to mimic the original chain topology
 
     Parameters
