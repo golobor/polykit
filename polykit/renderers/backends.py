@@ -88,11 +88,11 @@ class Fresnel():
                  colors,
                  radii,
                  intensity=0.,
-                 metal=0.4,
+                 metal=0.7,
                  specular=0.8,
                  spec_trans=0.1,
-                 roughness=0.2,
-                 outline=0.05):
+                 roughness=0.1,
+                 outline=0.04):
         """
         Render individual polymer/particle configurations using the Fresnel backend library
             
@@ -148,7 +148,7 @@ class Fresnel():
                                                  primitive_color_mix=1.,
                                                  solid=0.)
         geometry.outline_material = fl.material.Material(color=fl.color.linear([.25,.25,.25]),
-                                                         roughness=2*roughness,
+                                                         roughness=roughness,
                                                          metal=metal,
                                                          specular=specular,
                                                          spec_trans=spec_trans,
